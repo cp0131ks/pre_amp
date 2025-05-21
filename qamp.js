@@ -250,7 +250,7 @@ define(['pipAPI','underscore'], function(APIConstructor, _) {
             // we save as CSV because qualtrics limits to 20K characters and this is more efficient.
             serialize: function (name, logs) {
                 //var headers = ['block', 'trial', 'cond', 'type', 'cat',  'stim', 'resp', 'err', 'rt', 'd', 'fb', 'bOrd'];
-		var headers = ['block', 'trial', 'cond', 'type', 'cat',  'stim', 'resp', 'err', 'rt', 'd', 'fb', 'bOrd'];
+				var headers = ['block','trial','cond', 'cat', 'resp', 'err', 'rt','fb'];
                 var myLogs = [];
                 var iLog;
                 for (iLog = 0; iLog < logs.length; iLog++)
@@ -276,22 +276,19 @@ define(['pipAPI','underscore'], function(APIConstructor, _) {
 		var content=" ";
 
 		    
-                   content = myLogs.map(function (log) { 
-                    return [
-                        log.data.block, //'block'
-                        log.trial_id, //'trial'
-                        log.data.condition, //'cond'
-                        log.data, //'comp'
-                        log.nameForLogging, //'type'
-                        log.stimuli[0], //'cat'     
-                        log.media[0], //'stim'
-                        log.responseHandle, //'resp'
-                        log.data.score, //'err'
-                        log.latency, //'rt'
-                        '', //'d'
-                        '', //'fb'
-                        '' //'bOrd'
-                        ]; });
+                     content = myLogs.map(function (log) {
+       					 return [
+								log.data.block,                                // 'block'
+								log.trial_id,                                  // 'trial'
+								log.data.condition,                            // 'cond'
+								log.stimuli[0],                                // 'cat'
+								(log.media.image ? log.media.image : log.media.word), // 'prime_sti'
+								log.responseHandle,                            // 'resp'
+								log.data.score,                                // 'err'
+								log.latency,                                   // 'rt'
+								''                                             // 'fb'
+							];
+						});
 		    
 		    
                 //Add a line with the feedback, score and block-order condition
